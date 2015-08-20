@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset=utf-8 />
-<title>Hurricane Sandy</title>
+<title>Hurricane Katrina</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
 
@@ -76,7 +76,8 @@ function main() {
         // the linestring has a point at every 6 hours
         // 21600000 = 6hours
         console.log(dt-start.getTime())
-        var c = Math.floor((dt - start)/21600000.0);
+        var cf= (dt - start)/21600000.0
+        var c = Math.floor(cf);
         console.log(c)
         if (c > 0){
           // after sandy
@@ -85,8 +86,14 @@ function main() {
             // move the marker
 
             setOpacity(1);
-            marker.setLatLng( new L.LatLng( geojson.coordinates[c][1], geojson.coordinates[c][0] ) );
-            rotateIcon(-720.0*c/geojson.coordinates.length)
+            var nextLat =  geojson.coordinates[c+1][1]
+            var nextLon =  geojson.coordinates[c+1][0]
+
+            var interpLat  = (nextLat - geojson.coordinates[c][1])*(cf-c) + geojson.coordinates[c][1]
+            var interpLon  = (nextLon - geojson.coordinates[c][0])*(cf-c) + geojson.coordinates[c][0]
+
+            marker.setLatLng( new L.LatLng( interpLat, interpLon ) );
+            rotateIcon(-720.0*cf/geojson.coordinates.length)
           } else {
             setOpacity(0);
           }
