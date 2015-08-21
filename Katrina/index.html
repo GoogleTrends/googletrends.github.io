@@ -108,13 +108,20 @@ function main() {
         console.log(c)
         if (c > 0){
           // after sandy
-          if (c < geojson.coordinates.length){
+          if (c < geojson.coordinates.length -1){
             // before end of storm
             // move the marker
 
             marker.setOpacity(1);
 
-            marker.setPosition( new google.maps.LatLng( geojson.coordinates[c][1], geojson.coordinates[c][0] ) );
+            var nextLat  = geojson.coordinates[c+1][1]
+            var nextLon  = geojson.coordinates[c+1][0]
+
+            var lat = (nextLat - geojson.coordinates[c][1])*(cf-c) + geojson.coordinates[c][1]
+            var lon = (nextLon - geojson.coordinates[c][0])*(cf-c) + geojson.coordinates[c][0]
+
+
+            marker.setPosition( new google.maps.LatLng(lat, lon ) );
             marker.rotateIcon(-720.0*cf/geojson.coordinates.length)
           } else {
             marker.setOpacity(0);
